@@ -6,6 +6,7 @@
         1c-admin
       </h1>
       <div class="links">
+        <nuxt-link to="/second">second</nuxt-link>
         <a
           href="https://nuxtjs.org/"
           target="_blank"
