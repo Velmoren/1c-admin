@@ -3,7 +3,18 @@
 }
 
 section {
-  padding-top: 65px;
+  padding-top: 56px;
+}
+
+.header {
+  .nuxt-link-exact-active {
+    color: white !important;
+  }
+}
+.table th, .table td {
+  text-align: center;
+  border: 1px solid #dee2e6;
+  vertical-align: middle;
 }
 
 //.bg-custom-main {

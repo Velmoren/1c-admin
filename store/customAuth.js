@@ -1,33 +1,37 @@
 export const state = () => ({
   user: {
     login: '',
-    password: ''
-  },
-  isAuth: false,
-  isAuthLoading: false
+    password: '',
+    userID: '',
+    isAuth: false,
+  }
 })
 
 export const mutations = {
-  increment(state) {
-    state.counter++
-  },
   setUserLogin(state, val) {
     state.user.login = val
   },
   setUserPassword(state, val) {
     state.user.password = val
+  },
+  setAuth(state, payload) {
+    state.user = payload
+    state.user.userID = payload.userID
   }
 }
 
 export const actions = {
   async setLogin({commit}, pay) {
-    const user = this.getters['auth/getUser']
-    await this.$axios.$get(`http://web1c.standart.by/std_UT/hs/api/ClientLogin/${user.login}/${user.password}`, {
+    const user = this.getters['customAuth/getUser']
+    return await this.$axios.$get(`http://web1c.standart.by/std_UT/hs/api/ClientLogin/${user.login}/${user.password}`, {
       auth: {
         username: 'hs',
         password: '1qasw23ed!'
       }
     })
+  },
+  setAuth({commit}, payload) {
+    commit('setAuth', payload)
   },
   setUserLogin({commit}, val) {
     commit('setUserLogin', val)
@@ -38,6 +42,9 @@ export const actions = {
 }
 
 export const getters = {
+  getUser(state) {
+    return state.user
+  },
   getUserLogin(state) {
     return state.user.login
   },
@@ -45,10 +52,7 @@ export const getters = {
     return state.user.password
   },
   getIsAuth(state) {
-    return state.isAuth
-  },
-  getIsAuthLoading(state) {
-    return state.isAuthLoading
+    return state.user.isAuth
   }
 }
 

@@ -24,6 +24,7 @@
                 v-model="userPassword"
                 type="password"
                 placeholder="Пароль"
+                autocomplete="on"
                 required
               ></b-form-input>
             </b-form-group>
@@ -50,6 +51,7 @@
 
 <script>
 export default {
+  middleware: 'notAuth',
   data() {
     return {
       form: {
@@ -63,24 +65,35 @@ export default {
   computed: {
     userLogin: {
       get: function () {
-        return this.$store.getters['auth/getUserLogin']
+        return this.$store.getters['customAuth/getUserLogin']
       },
       set: function (val) {
-        this.$store.dispatch('auth/setUserLogin', val)
+        this.$store.dispatch('customAuth/setUserLogin', val)
       }
     },
     userPassword: {
       get: function () {
-        return this.$store.getters['auth/getUserPassword']
+        return this.$store.getters['customAuth/getUserPassword']
       },
       set: function (val) {
-        this.$store.dispatch('auth/setUserPassword', val)
+        this.$store.dispatch('customAuth/setUserPassword', val)
       }
     }
   },
   methods: {
-    login() {
-      this.$store.dispatch('auth/setLogin')
+   async login(e) {
+     e.preventDefault()
+     await this.$store.dispatch('customAuth/setLogin').then(res => {
+       if(res.Access) {
+         const user = this.$store.getters['customAuth/getUser']
+         this.$store.dispatch('customAuth/setAuth', {...user, userID: res.Client_id, isAuth: true})
+         this.$cookiz.set('isAuth', this.$store.getters['customAuth/getUser'])
+         this.$router.push('/order');
+       }  else {
+         this.$store.dispatch('customAuth/setAuth', {login: '', password: '', userID: '', isAuth: false})
+         this.$cookiz.remove('isAuth')
+       }
+     })
     }
   }
 }

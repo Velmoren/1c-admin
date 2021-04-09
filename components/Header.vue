@@ -1,34 +1,26 @@
 <template>
   <div class="header">
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="/">1С админ-панель</b-navbar-brand>
+      <nuxt-link to="/" class="navbar-brand">Home page</nuxt-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/order">Заказы</b-nav-item>
-          <b-nav-item href="/shipment">Отгрузки</b-nav-item>
-          <b-nav-item href="/payments">Платежи</b-nav-item>
-          <b-nav-item href="/information">Информация</b-nav-item>
-          <b-nav-item href="#" @click="logger">logger</b-nav-item>
+          <nuxt-link to="/order" class="nav-link">Заказы</nuxt-link>
+          <nuxt-link to="/shipment" class="nav-link">Отгрузки</nuxt-link>
+          <nuxt-link to="/payments" class="nav-link">Платежи</nuxt-link>
+          <nuxt-link to="/information" class="nav-link">Информация</nuxt-link>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-spinner
-            variant="light"
-            type="grow"
-            label="Spinning"
-            v-if="isAuthLoading"
-          ></b-spinner>
-          <b-nav-item-dropdown right v-if="!isAuthLoading && isAuth">
+          <b-nav-item-dropdown right v-if="user.isAuth">
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em>User</em>
+              <em>{{user.login}}</em>
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item @click="logout">Выход</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -39,16 +31,15 @@
 <script>
 export default {
   methods: {
-    logger() {
-      console.log(this)
+    logout() {
+      this.$store.dispatch('customAuth/setAuth', {userID: '', isAuth: false})
+      this.$cookiz.remove('isAuth')
+      this.$router.push('/');
     }
   },
   computed: {
-    isAuthLoading() {
-      return this.$store.getters['auth/getIsAuthLoading']
-    },
-    isAuth() {
-      return this.$store.getters['auth/getIsAuth']
+    user() {
+      return this.$store.getters['customAuth/getUser']
     }
   }
 }

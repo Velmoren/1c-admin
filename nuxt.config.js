@@ -1,8 +1,7 @@
-export default {
-  // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+let development = process.env.NODE_ENV !== 'production'
 
-  // Global page headers: https://go.nuxtjs.dev/config-head
+export default {
+  target: 'static',
   head: {
     title: '1c-admin',
     htmlAttrs: {
@@ -18,7 +17,6 @@ export default {
     ]
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/scss/main.scss'
   ],
@@ -30,30 +28,27 @@ export default {
   router: {
     base: '/'
   },
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+
   plugins: [
   ],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
-    // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }]
   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  },
+
   build: {
+
   }
 }
